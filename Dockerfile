@@ -28,7 +28,11 @@ RUN apt-get update \
         libxi6 \
         libxcursor1 \
         chromium \
+        chromium-driver \
     && rm -rf /var/lib/apt/lists/*
+
+ENV CHROME_BINARY="/usr/bin/chromium" \
+    CHROMEDRIVER_PATH="/usr/bin/chromedriver"
 
 WORKDIR /app
 COPY . /app

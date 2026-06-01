@@ -1,5 +1,6 @@
-import os
+﻿import os
 import tempfile
+import shutil
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -13,6 +14,19 @@ def get_chrome_binary():
         "/usr/bin/google-chrome",
         "/usr/bin/chromium-browser",
         "/usr/bin/chromium",
+    ]
+    for path in candidates:
+        if path and os.path.exists(path):
+            return path
+    return None
+
+
+def get_chromedriver_path():
+    candidates = [
+        os.environ.get("CHROMEDRIVER_PATH"),
+        shutil.which("chromedriver"),
+        "/usr/bin/chromedriver",
+        "/usr/lib/chromium/chromedriver",
     ]
     for path in candidates:
         if path and os.path.exists(path):
@@ -42,7 +56,12 @@ def create_driver(headless: bool = True):
         opts.add_argument("--headless=new")
         opts.add_argument("--disable-gpu")
 
-    service = Service(ChromeDriverManager().install())
+    driver_path = get_chromedriver_path()
+    if driver_path:
+        service = Service(driver_path)
+    else:
+        service = Service(ChromeDriverManager().install())
+
     driver = webdriver.Chrome(service=service, options=opts)
     driver.set_page_load_timeout(60)
     driver._tmp_profile_dir = tmp_dir
