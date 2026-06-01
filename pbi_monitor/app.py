@@ -32,8 +32,9 @@ def run_scan(url):
         scan_state["results"] = []
         scan_state["message"] = ""
 
-        log("Launching Chrome with your profile...", "active")
-        driver = create_driver(headless=False)
+        headless = os.environ.get("HEADLESS_BROWSER", "1").lower() not in ("0", "false", "no")
+        log(f"Launching Chrome (headless={headless})...", "active")
+        driver = create_driver(headless=headless)
 
         results = scan_report(driver, url, log)
 
