@@ -83,11 +83,14 @@ def scan_status():
 @app.route("/screenshot/<filename>")
 def screenshot(filename):
     return send_from_directory(SCREENSHOTS_DIR, filename)
-
-
+    
 if __name__ == "__main__":
     os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
     print("\n  Power BI Visual Health Monitor")
-    print("  Open http://localhost:5000 in your browser")
     print("\n  IMPORTANT: Close ALL Chrome windows before starting a scan.\n")
-    app.run(debug=False, port=5000)
+    
+    # 1. Fetch the port Render gives you dynamically, defaulting to 5000
+    port = int(os.environ.get("PORT", 5000))
+    
+    # 2. Bind host to 0.0.0.0 so Render can detect and link the port
+    app.run(host="0.0.0.0", port=port, debug=False)
