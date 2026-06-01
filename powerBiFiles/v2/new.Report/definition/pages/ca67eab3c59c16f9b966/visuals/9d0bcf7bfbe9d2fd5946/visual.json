@@ -1,0 +1,180 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "9d0bcf7bfbe9d2fd5946",
+  "position": {
+    "x": 10.078740157480315,
+    "y": 0,
+    "z": 0,
+    "height": 720.62992125984249,
+    "width": 409.86876640419945,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customers1"
+                    }
+                  },
+                  "Property": "CustomerID"
+                }
+              },
+              "queryRef": "Customers1.CustomerID",
+              "nativeQueryRef": "CustomerID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customers1"
+                    }
+                  },
+                  "Property": "FirstName"
+                }
+              },
+              "queryRef": "Customers1.FirstName",
+              "nativeQueryRef": "FirstName"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customers1"
+                    }
+                  },
+                  "Property": "Gender"
+                }
+              },
+              "queryRef": "Customers1.Gender",
+              "nativeQueryRef": "Gender"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customers1"
+                    }
+                  },
+                  "Property": "MaritalStatus"
+                }
+              },
+              "queryRef": "Customers1.MaritalStatus",
+              "nativeQueryRef": "MStatus",
+              "displayName": "MStatus"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Customers1"
+                        }
+                      },
+                      "Property": "AnnualIncome"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Customers1.AnnualIncome)",
+              "nativeQueryRef": "Income",
+              "displayName": "Income"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a079bc5ac151005b4ebe",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Customers1"
+              }
+            },
+            "Property": "CustomerID"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "96578224cb6342b43342",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Customers1"
+              }
+            },
+            "Property": "FirstName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9beddca43d61f6c7288f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Customers1"
+              }
+            },
+            "Property": "Gender"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "cb61b8cabc65d57822b0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Customers1"
+              }
+            },
+            "Property": "MaritalStatus"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "2da2b0e8a6e953037aa5",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Customers1"
+                  }
+                },
+                "Property": "AnnualIncome"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

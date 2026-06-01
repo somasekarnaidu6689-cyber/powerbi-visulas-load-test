@@ -1,0 +1,74 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "254e6274d9d41c6bd902",
+  "position": {
+    "x": 651.758530183727,
+    "y": 322.51968503937007,
+    "z": 2,
+    "height": 137.74278215223097,
+    "width": 196.53543307086613,
+    "tabOrder": 6
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customers1"
+                    }
+                  },
+                  "Property": "AvgAge"
+                }
+              },
+              "queryRef": "Customers1.AvgAge",
+              "nativeQueryRef": "AvgAge"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Customers1"
+                  }
+                },
+                "Property": "AvgAge"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "5d1bc3f0612961e44080",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Customers1"
+              }
+            },
+            "Property": "AvgAge"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

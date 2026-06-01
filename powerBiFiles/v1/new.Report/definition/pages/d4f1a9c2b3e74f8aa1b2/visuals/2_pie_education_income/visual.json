@@ -1,0 +1,97 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "2_pie_education_income",
+  "position": {
+    "x": 420,
+    "y": 20,
+    "z": 1,
+    "height": 260,
+    "width": 380,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "donutChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customers1"
+                    }
+                  },
+                  "Property": "EducationLevel"
+                }
+              },
+              "queryRef": "Customers1.EducationLevel",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Customers1"
+                        }
+                      },
+                      "Property": "AnnualIncome"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Customers1.AnnualIncome)",
+              "nativeQueryRef": "Sum of AnnualIncome"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "113431c04902236e6e9b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Customers1"
+              }
+            },
+            "Property": "EducationLevel"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "33c80265bb2f27b0bebe",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Customers1"
+                  }
+                },
+                "Property": "AnnualIncome"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

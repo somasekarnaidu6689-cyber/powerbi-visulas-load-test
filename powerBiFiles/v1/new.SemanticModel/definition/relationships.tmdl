@@ -1,0 +1,5 @@
+relationship df46c76c-5a0e-4cfb-8865-e508dfc50bda
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Customers1.BirthDate
+	toColumn: LocalDateTable_fc98a574-e763-4d4b-9c07-954e313107f1.Date
+

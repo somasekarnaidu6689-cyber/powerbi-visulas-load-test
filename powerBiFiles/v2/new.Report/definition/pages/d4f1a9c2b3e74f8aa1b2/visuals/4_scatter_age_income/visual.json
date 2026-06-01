@@ -1,0 +1,97 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "4_scatter_age_income",
+  "position": {
+    "x": 20,
+    "y": 300,
+    "z": 1,
+    "height": 260,
+    "width": 380,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customers1"
+                    }
+                  },
+                  "Property": "Age"
+                }
+              },
+              "queryRef": "Customers1.Age",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Customers1"
+                        }
+                      },
+                      "Property": "AnnualIncome"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Customers1.AnnualIncome)",
+              "nativeQueryRef": "Sum of AnnualIncome"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "9ee752117d1418ae807b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Customers1"
+              }
+            },
+            "Property": "Age"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "4af4a1fcb2a1a1100ccd",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Customers1"
+                  }
+                },
+                "Property": "AnnualIncome"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

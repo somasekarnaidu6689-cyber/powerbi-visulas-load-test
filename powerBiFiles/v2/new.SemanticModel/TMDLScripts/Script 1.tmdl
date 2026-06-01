@@ -1,0 +1,9 @@
+createOrReplace
+
+	ref table Customers1
+
+		measure AvgAge = AVERAGE( Customers1[Age] )
+			lineageTag: e7245987-a7d5-4928-8f54-74fd669fdedb
+
+			changedProperty = IsHidden
+

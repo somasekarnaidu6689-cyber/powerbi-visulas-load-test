@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "3_column_occupation_income",
+  "position": {
+    "x": 820,
+    "y": 20,
+    "z": 1,
+    "height": 260,
+    "width": 380,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customers1"
+                    }
+                  },
+                  "Property": "Occupation"
+                }
+              },
+              "queryRef": "Customers1.Occupation",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Customers1"
+                        }
+                      },
+                      "Property": "AnnualIncome"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Customers1.AnnualIncome)",
+              "nativeQueryRef": "Sum of AnnualIncome"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

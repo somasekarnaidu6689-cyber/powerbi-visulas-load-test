@@ -1,0 +1,122 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "83a29ad0eb9c2b78de89",
+  "position": {
+    "x": 419.9475065616798,
+    "y": 0,
+    "z": 3,
+    "height": 455.2230971128609,
+    "width": 589.6062992125984,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "pieChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Product Detail"
+                    }
+                  },
+                  "Property": "Product Style"
+                }
+              },
+              "queryRef": "Product Detail.Product Style",
+              "nativeQueryRef": "Product Style",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Product Detail"
+                        }
+                      },
+                      "Property": "ProductCost"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Product Detail.ProductCost)",
+              "nativeQueryRef": "Sum of ProductCost"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "Product Detail"
+                      }
+                    },
+                    "Property": "ProductCost"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7b04ab870b6090365401",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Product Detail"
+                  }
+                },
+                "Property": "ProductCost"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "20051c35e0e18708ad2c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Product Detail"
+              }
+            },
+            "Property": "Product Style"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

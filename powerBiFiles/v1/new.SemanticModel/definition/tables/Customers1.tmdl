@@ -1,0 +1,165 @@
+table Customers1
+	lineageTag: a62c3590-30e0-4b60-be09-c0d9cbe03489
+
+	measure AvgAnnualIncome = AVERAGE( Customers1[AnnualIncome] )
+		lineageTag: 64e0f95b-4bc2-4d78-8d00-3d02dae9ef60
+
+	measure TotalAnnualIncome = SUM( Customers1[AnnualIncome] )
+		lineageTag: 8987ba86-08dd-470e-a1f5-7e4d1717f62e
+
+	measure CustomerCount = DISTINCTCOUNT( Customers1[CustomerID] )
+		lineageTag: 17119270-4f92-4f8a-a7df-be4c1a78e23b
+
+	measure AvgAge = AVERAGE( Customers1[Age] )
+		lineageTag: e7245987-a7d5-4928-8f54-74fd669fdedb
+
+		changedProperty = IsHidden
+
+	measure TotalChildren_Sum = SUM( Customers1[TotalChildren] )
+		lineageTag: 63a879c1-abee-4153-a8f5-6257ed0cba82
+
+	column CustomerID
+		dataType: string
+		lineageTag: e8fc3188-608a-47db-ad4f-fb9381b9b2d5
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Prefix
+		dataType: string
+		lineageTag: bd96cccc-fd1c-4c6c-843a-336a60bf7dac
+		summarizeBy: none
+		sourceColumn: Prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstName
+		dataType: string
+		lineageTag: 7fe1e30d-c750-42f1-bd5d-a304086a1bd0
+		summarizeBy: none
+		sourceColumn: FirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastName
+		dataType: string
+		lineageTag: b632119f-7082-42d5-8b80-5f978a83feed
+		summarizeBy: none
+		sourceColumn: LastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BirthDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e7616fa8-a023-455e-b4ca-6160ff8f68de
+		summarizeBy: none
+		sourceColumn: BirthDate
+
+		variation Variation
+			isDefault
+			relationship: df46c76c-5a0e-4cfb-8865-e508dfc50bda
+			defaultHierarchy: LocalDateTable_fc98a574-e763-4d4b-9c07-954e313107f1.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MaritalStatus
+		dataType: string
+		lineageTag: 3b42910d-16bd-466c-a4e1-1c231568fd96
+		summarizeBy: none
+		sourceColumn: MaritalStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 32cfc290-67c9-42f3-a7a5-427ed7223aed
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmailAddress
+		dataType: string
+		lineageTag: 3a090eb2-db33-4b5c-95d0-ccb53f9e4b83
+		summarizeBy: none
+		sourceColumn: EmailAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnnualIncome
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 525ea686-5f05-42e9-bd11-f0d4de50f494
+		summarizeBy: sum
+		sourceColumn: AnnualIncome
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column TotalChildren
+		dataType: int64
+		formatString: 0
+		lineageTag: e342d5db-9728-4766-9e9b-a577ff0e6e1d
+		summarizeBy: sum
+		sourceColumn: TotalChildren
+
+		annotation SummarizationSetBy = Automatic
+
+	column EducationLevel
+		dataType: string
+		lineageTag: eb75696c-4630-448c-9928-7f88c72ec4da
+		summarizeBy: none
+		sourceColumn: EducationLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Occupation
+		dataType: string
+		lineageTag: e9b12352-941a-44c4-b703-3167a457c074
+		summarizeBy: none
+		sourceColumn: Occupation
+
+		annotation SummarizationSetBy = Automatic
+
+	column HomeOwner
+		dataType: string
+		lineageTag: d150d8c4-15cd-4d3a-b787-bc21c62ea1ac
+		summarizeBy: none
+		sourceColumn: HomeOwner
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: a16bd47e-3325-4276-8dac-70072174d891
+		summarizeBy: sum
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: b18a1151-c920-4f7d-b76f-99ce7f2cba90
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customers1 = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\somsekar.naidu\Downloads\PowerBI-Datasets-main\Customers.xlsx"), null, true),
+				    Customers_Table = Source{[Item="Customers",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Customers_Table,{{"CustomerID", type text}, {"Prefix", type text}, {"FirstName", type text}, {"LastName", type text}, {"BirthDate", type date}, {"MaritalStatus", type text}, {"Gender", type text}, {"EmailAddress", type text}, {"AnnualIncome", Currency.Type}, {"TotalChildren", Int64.Type}, {"EducationLevel", type text}, {"Occupation", type text}, {"HomeOwner", type text}, {"Age", Int64.Type}, {"Status", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

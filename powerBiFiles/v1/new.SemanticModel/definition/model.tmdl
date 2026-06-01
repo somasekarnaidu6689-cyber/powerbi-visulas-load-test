@@ -1,0 +1,21 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Customers1","Product Detail"]
+
+annotation PBI_ProTooling = ["DevMode","TMDLView_Desktop"]
+
+ref table Customers1
+ref table DateTableTemplate_f61d36a0-5d14-4a28-a7da-cdd318fbacc2
+ref table LocalDateTable_fc98a574-e763-4d4b-9c07-954e313107f1
+ref table 'Product Detail'
+
+ref cultureInfo en-US
+

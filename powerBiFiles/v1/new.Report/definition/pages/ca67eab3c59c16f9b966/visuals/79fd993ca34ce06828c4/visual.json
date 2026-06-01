@@ -1,0 +1,177 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "79fd993ca34ce06828c4",
+  "position": {
+    "x": 784.46194225721786,
+    "y": 361.15485564304458,
+    "z": 4,
+    "height": 359.47506561679791,
+    "width": 485.45931758530185,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Product Detail"
+                    }
+                  },
+                  "Property": "Product Code"
+                }
+              },
+              "queryRef": "Product Detail.Product Code",
+              "nativeQueryRef": "Product Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Product Detail"
+                    }
+                  },
+                  "Property": "Product Style"
+                }
+              },
+              "queryRef": "Product Detail.Product Style",
+              "nativeQueryRef": "Product Style"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Product Detail"
+                        }
+                      },
+                      "Property": "ProductCost"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Product Detail.ProductCost)",
+              "nativeQueryRef": "Sum of ProductCost"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Product Detail"
+                        }
+                      },
+                      "Property": "ProductPrice"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(Product Detail.ProductPrice)",
+              "nativeQueryRef": "Sum of ProductPrice"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Product Detail"
+                  }
+                },
+                "Property": "Product Code"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "d8274fb01d0e7b968a4b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Product Detail"
+              }
+            },
+            "Property": "Product Code"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ea540f1384d0db52d163",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Product Detail"
+              }
+            },
+            "Property": "Product Style"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "0c6941373ed4a3be92bd",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Product Detail"
+                  }
+                },
+                "Property": "ProductCost"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "da0b5660ddadbc08ba43",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Product Detail"
+                  }
+                },
+                "Property": "ProductPrice"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

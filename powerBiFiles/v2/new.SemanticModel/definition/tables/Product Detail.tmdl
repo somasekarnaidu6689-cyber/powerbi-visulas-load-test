@@ -1,0 +1,102 @@
+table 'Product Detail'
+	lineageTag: e02ca25c-65fe-4271-b5cb-f8e31a098bef
+
+	column 'Product Key'
+		dataType: int64
+		formatString: 0
+		lineageTag: c2e9d5ee-ead2-48aa-a327-5637815c4ecb
+		summarizeBy: count
+		sourceColumn: Product Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductSubcategoryKey
+		dataType: int64
+		formatString: 0
+		lineageTag: eb92c68e-4887-474b-8693-12318fe1af98
+		summarizeBy: count
+		sourceColumn: ProductSubcategoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductSKU
+		dataType: string
+		lineageTag: a146ec92-043b-460c-950b-ecc203f42d5b
+		summarizeBy: none
+		sourceColumn: ProductSKU
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 7ce4ab28-2b8d-4cd9-ad71-b35facf766f0
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Code'
+		dataType: string
+		lineageTag: a3fd21f3-b470-46f0-846c-5dcfe8f8c5a1
+		summarizeBy: none
+		sourceColumn: Product Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductDescription
+		dataType: string
+		lineageTag: 9c5c843e-92cb-4b88-9b4a-43b5c902881e
+		summarizeBy: none
+		sourceColumn: ProductDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Units'
+		dataType: string
+		lineageTag: 7a573a34-bc9e-4ab6-b922-0a72616b52bf
+		summarizeBy: none
+		sourceColumn: Product Units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Style'
+		dataType: string
+		lineageTag: 440a000b-27e4-4fdc-a219-a63cd043ae9d
+		summarizeBy: none
+		sourceColumn: Product Style
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCost
+		dataType: double
+		lineageTag: 0f3a74e2-6e9b-4e41-a1d6-a8a6baab587e
+		summarizeBy: sum
+		sourceColumn: ProductCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProductPrice
+		dataType: double
+		lineageTag: bbec8646-6658-43ad-946b-63638d15c4f7
+		summarizeBy: sum
+		sourceColumn: ProductPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Product Detail' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\somsekar.naidu\Downloads\PowerBI-Datasets-main\Product.xlsx"), null, true),
+				    #"Product Detail_Sheet" = Source{[Item="Product Detail",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Product Detail_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Product Key", Int64.Type}, {"ProductSubcategoryKey", Int64.Type}, {"ProductSKU", type text}, {"ProductName", type text}, {"Product Code", type text}, {"ProductDescription", type text}, {"Product Units", type text}, {"Product Style", type any}, {"ProductCost", type number}, {"ProductPrice", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

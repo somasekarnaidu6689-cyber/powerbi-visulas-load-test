@@ -1,0 +1,73 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "5_card_avg_income",
+  "position": {
+    "x": 419.9475065616798,
+    "y": 300.68241469816275,
+    "z": 1,
+    "height": 159.5800524934383,
+    "width": 231.81102362204723,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Customers1"
+                    }
+                  },
+                  "Property": "AvgAnnualIncome"
+                }
+              },
+              "queryRef": "Customers1.AvgAnnualIncome",
+              "nativeQueryRef": "AvgAnnualIncome"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Customers1"
+                  }
+                },
+                "Property": "AvgAnnualIncome"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a8429e49d3d22ad8ec17",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Customers1"
+              }
+            },
+            "Property": "AvgAnnualIncome"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

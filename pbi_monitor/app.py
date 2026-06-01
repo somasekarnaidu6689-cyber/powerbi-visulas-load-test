@@ -1,0 +1,93 @@
+import os
+import threading
+from flask import Flask, request, jsonify, render_template, send_from_directory
+from monitor.browser import create_driver
+from monitor.scanner import scan_report
+import shutil   
+
+
+app = Flask(__name__)
+SCREENSHOTS_DIR = os.path.join(os.path.dirname(__file__), "screenshots")
+
+scan_state = {
+    "status": "idle",
+    "current_step": "",
+    "log": [],
+    "results": [],
+    "message": "",
+}
+
+
+def log(message, state="active"):
+    scan_state["log"].append({"message": message, "state": state})
+    scan_state["current_step"] = message
+    print(f"[{state.upper()}] {message}")
+
+
+def run_scan(url):
+    driver = None
+    try:
+        scan_state["status"] = "running"
+        scan_state["log"] = []
+        scan_state["results"] = []
+        scan_state["message"] = ""
+
+        log("Launching Chrome with your profile...", "active")
+        driver = create_driver(headless=False)
+
+        results = scan_report(driver, url, log)
+
+        scan_state["results"] = results
+        scan_state["status"] = "done"
+        log("Scan complete", "ok")
+
+    except Exception as e:
+        scan_state["status"] = "error"
+        scan_state["message"] = str(e)
+        log(f"Error: {e}", "error")
+    finally:
+        if driver:
+            try:
+                driver.quit()
+            except Exception:
+                pass
+            tmp = getattr(driver, "_tmp_profile_dir", None)
+            if tmp and os.path.exists(tmp):
+                shutil.rmtree(tmp, ignore_errors=True)
+                print(f"[cleanup] Temp profile deleted: {tmp}")
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/start_scan", methods=["POST"])
+def start_scan():
+    if scan_state["status"] == "running":
+        return jsonify({"error": "A scan is already running. Please wait."})
+    data = request.get_json()
+    url = (data or {}).get("url", "").strip()
+    if not url or "powerbi.com" not in url:
+        return jsonify({"error": "Please provide a valid Power BI report URL."})
+    thread = threading.Thread(target=run_scan, args=(url,), daemon=True)
+    thread.start()
+    return jsonify({"ok": True})
+
+
+@app.route("/scan_status")
+def scan_status():
+    return jsonify(scan_state)
+
+
+@app.route("/screenshot/<filename>")
+def screenshot(filename):
+    return send_from_directory(SCREENSHOTS_DIR, filename)
+
+
+if __name__ == "__main__":
+    os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
+    print("\n  Power BI Visual Health Monitor")
+    print("  Open http://localhost:5000 in your browser")
+    print("\n  IMPORTANT: Close ALL Chrome windows before starting a scan.\n")
+    app.run(debug=False, port=5000)
