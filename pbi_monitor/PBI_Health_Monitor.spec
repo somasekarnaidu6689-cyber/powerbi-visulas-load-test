@@ -1,7 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import collect_all
 
-datas = [('templates', 'templates'), ('monitor', 'monitor')]
+datas = [('templates', 'templates'), ('monitor', 'monitor'), ('static', 'static')]
 binaries = []
 hiddenimports = ['flask', 'engineio']
 tmp_ret = collect_all('selenium')

@@ -42,43 +42,149 @@ PAGE_TAB_SELECTORS = [
 
 
 def detect_page_tabs(driver):
+
+    contexts = []
+
+    # Default page
+    contexts.append(None)
+
+    # All iframes
     driver.switch_to.default_content()
 
-    for selector in PAGE_TAB_SELECTORS:
-        elements = driver.find_elements(By.CSS_SELECTOR, selector)
-        if not elements:
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+
+    contexts.extend(iframes)
+
+    for frame in contexts:
+
+        try:
+
+            driver.switch_to.default_content()
+
+            if frame is not None:
+                driver.switch_to.frame(frame)
+
+            for selector in PAGE_TAB_SELECTORS:
+
+                elements = driver.find_elements(
+                    By.CSS_SELECTOR,
+                    selector
+                )
+
+                if not elements:
+                    continue
+
+                tabs = []
+
+                for el in elements:
+
+                    try:
+
+                        if not el.is_displayed():
+                            continue
+
+                        name = (
+                            el.get_attribute("title")
+                            or el.get_attribute("aria-label")
+                            or el.text.strip()
+                        )
+
+                        if not name:
+                            continue
+
+                        ignored = [
+                            "fit to page",
+                            "fit to width",
+                            "actual size",
+                            "full screen",
+                            "zoom in",
+                            "zoom out",
+                            "reset",
+                            "bookmark",
+                            "filter",
+                            "more options"
+                        ]
+
+                        if name.strip().lower() in ignored:
+                            continue
+
+                        tabs.append((name.strip(), el))
+
+                    except Exception:
+                        continue
+
+                if tabs:
+
+                    seen = set()
+
+                    unique = []
+
+                    for name, el in tabs:
+
+                        if name not in seen:
+
+                            seen.add(name)
+
+                            unique.append((name, el))
+
+                    print(
+                        f"[debug] Detected tabs with selector '{selector}':"
+                    )
+
+                    for name, el in unique:
+
+                        print(
+                            f"  - '{name}' "
+                            f"| class={el.get_attribute('class')[:60]}"
+                        )
+
+                    return unique
+
+        except Exception:
             continue
 
-        tabs = []
-        for el in elements:
-            name = (
-                el.get_attribute("title")
-                or el.get_attribute("aria-label")
-                or el.text.strip()
-            )
-            # Filter out toolbar buttons — real page tabs have short plain names
-            # Toolbar items tend to be icon-only or have tooltip-style names
-            if not name or len(name.strip()) == 0:
-                continue
-            if name.strip().lower() in ["fit to page", "fit to width", "actual size",
-                                         "full screen", "zoom in", "zoom out",
-                                         "reset", "bookmark", "filter", "more options"]:
-                continue
-
-            tabs.append((name.strip(), el))
-
-        if tabs:
-            seen, unique = set(), []
-            for name, el in tabs:
-                if name not in seen:
-                    seen.add(name)
-                    unique.append((name, el))
-            print(f"[debug] Detected tabs with selector '{selector}':")
-            for name, el in unique:
-                print(f"  - '{name}' | aria-selected={el.get_attribute('aria-selected')} | class={el.get_attribute('class')[:60]}")
-            return unique
-
     return []
+
+def wait_for_page_navigation(driver, timeout=60):
+    """
+    Wait for Power BI page navigation tabs/sidebar to appear.
+    """
+
+    start = time.time()
+
+    while time.time() - start < timeout:
+
+        driver.switch_to.default_content()
+
+        for selector in PAGE_TAB_SELECTORS:
+
+            try:
+                elements = driver.find_elements(
+                    By.CSS_SELECTOR,
+                    selector
+                )
+
+                visible = [
+                    el for el in elements
+                    if el.is_displayed()
+                ]
+
+                if len(visible) > 0:
+
+                    print(
+                        f"[debug] Navigation detected with selector: {selector}"
+                    )
+
+                    return True
+
+            except Exception:
+                pass
+
+        time.sleep(1)
+
+    print("[warning] Page navigation not detected")
+
+    return False
 
 
 def wait_for_report_load(driver, timeout=45):
@@ -87,10 +193,13 @@ def wait_for_report_load(driver, timeout=45):
     )
     time.sleep(5)
 
-def wait_for_visuals_to_load(driver, timeout=120):
+def wait_for_visuals_to_load(driver, timeout=250):
     """
     Wait for Power BI visuals to stabilize.
-    Avoids infinite waiting caused by hidden loading elements.
+
+    Returns:
+        "loaded"  -> visuals stabilized successfully
+        "timeout" -> exceeded timeout
     """
 
     start = time.time()
@@ -111,7 +220,6 @@ def wait_for_visuals_to_load(driver, timeout=120):
                     errors: 0
                 };
 
-                // Count actual visible visuals
                 const visuals = document.querySelectorAll(
                     '.visualContainer, [class*="visual"]'
                 );
@@ -128,7 +236,6 @@ def wait_for_visuals_to_load(driver, timeout=120):
                         result.rendered++;
                     }
 
-                    // Detect visible spinner INSIDE visual
                     const spinner = v.querySelector(
                         '.spinner, .loadingIndicator, .pbi-glyph-load'
                     );
@@ -140,7 +247,6 @@ def wait_for_visuals_to_load(driver, timeout=120):
                         result.visibleSpinners++;
                     }
 
-                    // Detect errors
                     const err =
                         v.querySelector('[class*="error"]') ||
                         v.querySelector('.visual-error') ||
@@ -163,13 +269,11 @@ def wait_for_visuals_to_load(driver, timeout=120):
 
             rendered = state["rendered"]
 
-            # Main readiness condition
             ready = (
                 rendered > 0 and
                 state["visibleSpinners"] == 0
             )
 
-            # Detect stabilization
             if ready:
 
                 if rendered == previous_rendered:
@@ -181,7 +285,7 @@ def wait_for_visuals_to_load(driver, timeout=120):
 
                     if stable_time >= stable_required:
                         print("[debug] visuals stabilized")
-                        return True
+                        return "loaded"
 
                 else:
                     stable_since = None
@@ -196,8 +300,8 @@ def wait_for_visuals_to_load(driver, timeout=120):
 
         time.sleep(1)
 
-    print(f"[warning] visuals did not stabilize within {timeout}s")
-    return False
+    print(f"[warning] visuals exceeded {timeout}s timeout")
+    return "timeout"
 
 def switch_into_report_iframe(driver):
     driver.switch_to.default_content()
@@ -245,13 +349,21 @@ def scan_for_errors(driver):
     return errors
 
 
-def take_screenshot(driver, page_name):
+def take_screenshot(driver, page_name, status="ok"):
     os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
+
     safe = "".join(c if c.isalnum() else "_" for c in page_name)
+
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"{safe}_{ts}.png"
+
+    filename = f"{status.upper()}_{safe}_{ts}.png"
+
     driver.switch_to.default_content()
-    driver.save_screenshot(os.path.join(SCREENSHOTS_DIR, filename))
+
+    driver.save_screenshot(
+        os.path.join(SCREENSHOTS_DIR, filename)
+    )
+
     return filename
 
 
@@ -264,6 +376,13 @@ def scan_report(driver, url, log_callback):
     log_callback("Waiting for report to load...", "active")
     wait_for_report_load(driver)
     log_callback("Report loaded", "ok")
+
+    log_callback(
+        "Waiting for report navigation...",
+        "active"
+    )
+
+    wait_for_page_navigation(driver, timeout=60)
 
     log_callback("Detecting report pages...", "active")
 
@@ -323,30 +442,58 @@ def scan_report(driver, url, log_callback):
             "active"
         )
 
-        wait_for_visuals_to_load(driver, timeout=120)
+        load_status = wait_for_visuals_to_load(driver, timeout=250)
 
-        log_callback(
-            f"Visual loading complete for '{page_name}'",
-            "ok"
-        )
+        if load_status == "timeout":
+            log_callback(
+                f"{page_name} exceeded 250s visual load SLA",
+                "warning"
+            )
+        else:
+            log_callback(
+                f"Visual loading complete for '{page_name}'",
+                "ok"
+            )
 
         # Scan errors AFTER visuals stabilize
         errors = scan_for_errors(driver)
 
+
         has_error = len(errors) > 0
 
-        screenshot = take_screenshot(driver, page_name)
+        if has_error:
+            page_status = "error"
+
+        elif load_status == "timeout":
+            page_status = "timeout"
+
+        else:
+            page_status = "ok"
+
+        screenshot = take_screenshot(
+            driver,
+            page_name,
+            status=page_status
+        )
 
         results.append({
             "page_name": page_name,
             "has_error": has_error,
+            "load_status": load_status,
+            "page_status": page_status,
             "errors": errors,
             "screenshot": screenshot,
         })
 
-        log_callback(
-            f"{page_name} — {'ERROR found' if has_error else 'clean'}",
-            "error" if has_error else "ok"
-        )
+        if page_status == "error":
+            state = "error"
+            message = f"{page_name} — ERROR found"
+
+        elif page_status == "timeout":
+            state = "warning"
+            message = f"{page_name} — TIMED OUT (>250s)"
+
+        else:
+            state = "ok"
 
     return results
