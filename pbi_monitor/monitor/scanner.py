@@ -4,8 +4,14 @@ from datetime import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import sys
 
-SCREENSHOTS_DIR = os.path.join(os.path.dirname(__file__), "..", "screenshots")
+def get_runtime_path():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__ + "/.."))
+
+SCREENSHOTS_DIR = os.path.join(get_runtime_path(), "screenshots")
 
 ERROR_SELECTORS = [
     "div.errorMessage.themableBackgroundColorSolid",

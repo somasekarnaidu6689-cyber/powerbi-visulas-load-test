@@ -3,11 +3,30 @@ import threading
 from flask import Flask, request, jsonify, render_template, send_from_directory
 from monitor.browser import create_driver
 from monitor.scanner import scan_report
-import shutil   
+import shutil  
+import sys
 
 
-app = Flask(__name__)
-SCREENSHOTS_DIR = os.path.join(os.path.dirname(__file__), "screenshots")
+def get_base_path():
+    """Works both when running as .py and as a PyInstaller .exe"""
+    if getattr(sys, 'frozen', False):
+        return sys._MEIPASS
+    return os.path.dirname(os.path.abspath(__file__))
+
+def get_runtime_path():
+    """
+    For files that need to be WRITTEN (screenshots, cookies) —
+    use the folder where the .exe lives, not the temp bundle folder.
+    """
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__))
+
+
+
+
+app = Flask(__name__, template_folder=os.path.join(get_base_path(), "templates"))
+SCREENSHOTS_DIR = os.path.join(get_runtime_path(), "screenshots")
 
 scan_state = {
     "status": "idle",
@@ -22,6 +41,8 @@ def log(message, state="active"):
     scan_state["log"].append({"message": message, "state": state})
     scan_state["current_step"] = message
     print(f"[{state.upper()}] {message}")
+
+
 
 
 def run_scan(url):
