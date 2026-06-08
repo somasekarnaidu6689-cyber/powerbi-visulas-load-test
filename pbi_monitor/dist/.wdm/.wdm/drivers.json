@@ -2,5 +2,13 @@
     "win64_edgedriver_148.0.3967.96_for_148.0.3967": {
         "timestamp": "02/06/2026",
         "binary_path": "C:\\Users\\somsekar.naidu\\Desktop\\version-1\\powerbi-visulas-load-test\\pbi_monitor\\dist\\.wdm\\.wdm\\drivers\\edgedriver\\win64\\148.0.3967.96\\msedgedriver.exe"
+    },
+    "win64_edgedriver_148.0.3967.109_for_148.0.3967": {
+        "timestamp": "05/06/2026",
+        "binary_path": "C:\\Users\\somsekar.naidu\\Desktop\\version-1\\powerbi-visulas-load-test\\pbi_monitor\\dist\\.wdm\\.wdm\\drivers\\edgedriver\\win64\\148.0.3967.109\\msedgedriver.exe"
+    },
+    "win64_edgedriver_149.0.4022.52_for_149.0.4022": {
+        "timestamp": "08/06/2026",
+        "binary_path": "C:\\Users\\somsekar.naidu\\Desktop\\version-1\\powerbi-visulas-load-test\\pbi_monitor\\dist\\.wdm\\.wdm\\drivers\\edgedriver\\win64\\149.0.4022.52\\msedgedriver.exe"
     }
 }

@@ -1,5 +1,8 @@
 # Power BI Visual Health Monitor
 
+## Project WalkThrough - [ Document ](https://psiog0-my.sharepoint.com/:w:/g/personal/somsekar_naidu_psiog_com/IQCBWJHijfv9QIaiidUwf4uPASLI6S1q-hTYQqfDdsEZa3c?e=bOib4l) 
+
+
 ## Overview
 
 This repository contains a Power BI visual health monitor built with Python, Flask, Selenium, and Microsoft Edge WebDriver. The application loads Power BI report URLs, navigates report pages, waits for visuals to render, detects error conditions, and captures screenshots for analysis.
